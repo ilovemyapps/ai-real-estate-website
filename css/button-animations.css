@@ -1,0 +1,255 @@
+/* Professional CTA Button Hover Effects */
+/* Optimized for conversion and user experience */
+
+/* Primary Button Enhancements */
+.primary-button {
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.primary-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(43, 43, 70, 0.25);
+  background-color: #1f1f35; /* Slightly darker on hover */
+}
+
+.primary-button:active {
+  transform: scale(1.02);
+  transition-duration: 0.1s;
+}
+
+/* Secondary Button Enhancements */
+.secondary-button {
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.secondary-button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(0, 172, 202, 0.15);
+  border-color: var(--color--accent);
+}
+
+.secondary-button:active {
+  transform: scale(1.01);
+  transition-duration: 0.1s;
+}
+
+/* Specific enhancement for white variant */
+.secondary-button.white:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Preserve the no-hover-effect variant */
+.secondary-button.without-hover-effect:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Add subtle ripple effect for primary buttons */
+.primary-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.primary-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Focus state for accessibility */
+.primary-button:focus,
+.secondary-button:focus {
+  outline: 2px solid var(--color--accent);
+  outline-offset: 2px;
+}
+
+/* Ensure smooth transitions on all states */
+.primary-button,
+.secondary-button,
+.primary-button::before {
+  -webkit-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .primary-button,
+  .secondary-button,
+  .primary-button::before {
+    transition: none;
+  }
+  
+  .primary-button:hover,
+  .secondary-button:hover {
+    transform: none;
+  }
+}
+
+/* Mobile optimization - reduce scale on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .primary-button:hover {
+    transform: scale(1.02);
+  }
+  
+  .secondary-button:hover {
+    transform: scale(1.015);
+  }
+}
+
+/* ========================================
+   PRICING CARD HOVER EFFECTS
+   ======================================== */
+
+/* Base pricing column styling for smooth transitions */
+.pricing-column {
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover effect for pricing columns */
+.pricing-column:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 172, 202, 0.15);
+  z-index: 2;
+}
+
+/* Enhanced shadow for mobile responsive pricing columns */
+@media screen and (max-width: 991px) {
+  .pricing-column:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 30px rgba(0, 172, 202, 0.12);
+  }
+}
+
+/* Special hover effects for different pricing tiers */
+.per-month-pricing-wrapper {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+/* Green tier (most popular) - enhanced effect */
+.pricing-column:hover .per-month-pricing-wrapper.green {
+  background-color: rgba(0, 208, 132, 0.15);
+  transform: scale(1.02);
+}
+
+/* Orange tier - warm highlight */
+.pricing-column:hover .per-month-pricing-wrapper.orange {
+  background-color: rgba(255, 107, 53, 0.15);
+  transform: scale(1.02);
+}
+
+/* Pink tier - elegant highlight */
+.pricing-column:hover .per-month-pricing-wrapper.pink {
+  background-color: rgba(244, 212, 235, 0.2);
+  transform: scale(1.02);
+}
+
+/* Subtle animation for pricing text on hover */
+.pricing-column:hover .per-month-pricing-wrapper .body-small {
+  transform: scale(1.05);
+  font-weight: 600;
+}
+
+/* Add subtle glow effect to the entire pricing wrapper */
+.pricing-columns-wrapper {
+  transition: all 0.3s ease;
+}
+
+/* Enhance the pricing column borders on hover */
+.pricing-column:hover {
+  border-color: rgba(0, 172, 202, 0.3);
+}
+
+/* Add a subtle background shift for the entire card */
+.pricing-column::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(0, 172, 202, 0.02) 0%, 
+    rgba(0, 172, 202, 0.01) 50%, 
+    transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.pricing-column:hover::before {
+  opacity: 1;
+}
+
+/* Ensure content stays above the overlay */
+.pricing-column > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Special effect for CTA buttons within pricing cards */
+.pricing-column:hover .secondary-button {
+  transform: scale(1.05);
+  border-color: var(--color--accent);
+  box-shadow: 0 6px 20px rgba(0, 172, 202, 0.2);
+}
+
+/* Focus state for accessibility */
+.pricing-column:focus {
+  outline: 2px solid var(--color--accent);
+  outline-offset: 4px;
+}
+
+/* Smooth transition for pricing rows */
+.pricing-row {
+  transition: all 0.3s ease;
+}
+
+.pricing-column:hover .pricing-row {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .pricing-column,
+  .per-month-pricing-wrapper,
+  .pricing-column::before,
+  .pricing-row {
+    transition: none;
+  }
+  
+  .pricing-column:hover,
+  .pricing-column:hover .per-month-pricing-wrapper,
+  .pricing-column:hover .per-month-pricing-wrapper .body-small,
+  .pricing-column:hover .secondary-button {
+    transform: none;
+  }
+}
+
+/* Mobile touch optimization */
+@media (hover: none) and (pointer: coarse) {
+  .pricing-column:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 172, 202, 0.1);
+  }
+  
+  .pricing-column:hover .per-month-pricing-wrapper {
+    transform: scale(1.01);
+  }
+}
