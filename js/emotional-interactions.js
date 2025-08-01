@@ -34,28 +34,94 @@ function initScrollAnimations() {
   });
 }
 
+// 🎛️ Initialize Toggle Background
+function initSwitchCirclePosition() {
+  const pricingTabs = document.querySelector('[data-current]');
+  const tabMenu = document.querySelector('.pricing-tab-menu');
+  
+  console.log('🔍 Debug: Init - pricingTabs found:', pricingTabs);
+  console.log('🔍 Debug: Init - tabMenu found:', tabMenu);
+  
+  if (pricingTabs && tabMenu) {
+    // Create the toggle background element
+    const toggleBg = document.createElement('div');
+    toggleBg.className = 'toggle-bg';
+    tabMenu.insertBefore(toggleBg, tabMenu.firstChild);
+    
+    const currentTab = pricingTabs.getAttribute('data-current');
+    console.log('🔍 Debug: Initializing toggle for:', currentTab);
+    
+    // Set initial position
+    if (currentTab === 'Yearly') {
+      toggleBg.style.transform = 'translateX(100%)';
+    } else {
+      toggleBg.style.transform = 'translateX(0%)';
+    }
+    
+    console.log('🔍 Debug: Toggle background created and positioned for:', currentTab);
+  } else {
+    console.error('❌ Init: Missing elements - pricingTabs:', !!pricingTabs, 'tabMenu:', !!tabMenu);
+  }
+}
+
 // 💰 Enhanced Price Flip Animation & Toggle Switch
 function initPriceFlipAnimation() {
   const pricingTabs = document.querySelector('[data-current]');
-  const tabLinks = document.querySelectorAll('[data-w-tab]');
+  const tabLinks = document.querySelectorAll('.pricing-tab-left-link, .pricing-tab-right-link');
+  
+  console.log('🔍 Debug: pricingTabs found:', pricingTabs);
+  console.log('🔍 Debug: tabLinks found:', tabLinks.length);
   
   if (!pricingTabs || !tabLinks.length) return;
   
+  // Force override Webflow's tab system
   tabLinks.forEach(link => {
+    // Remove any existing Webflow event listeners
+    link.removeAttribute('data-w-id');
+    
     link.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
+      
       const targetTab = e.currentTarget.getAttribute('data-w-tab');
       const currentTab = pricingTabs.getAttribute('data-current');
       
+      // Fallback: determine tab from class name if data-w-tab is missing
+      const isYearlyClick = e.currentTarget.classList.contains('pricing-tab-right-link');
+      const finalTargetTab = targetTab || (isYearlyClick ? 'Yearly' : 'Monthly');
+      
+      console.log('🔍 Debug: Clicked element:', e.currentTarget);
+      console.log('🔍 Debug: targetTab attribute:', targetTab);
+      console.log('🔍 Debug: isYearlyClick:', isYearlyClick);
+      console.log('🔍 Debug: finalTargetTab:', finalTargetTab, 'currentTab:', currentTab);
+      
       // Don't animate if clicking the same tab
-      if (targetTab === currentTab) return;
+      if (finalTargetTab === currentTab) return;
       
       // Update data-current attribute
-      pricingTabs.setAttribute('data-current', targetTab);
+      pricingTabs.setAttribute('data-current', finalTargetTab);
+      console.log('🔍 Debug: Updated data-current to:', finalTargetTab);
       
       // Update active states
       tabLinks.forEach(tab => tab.classList.remove('w--current'));
       e.currentTarget.classList.add('w--current');
+      
+      // Control the toggle background directly
+      const toggleBg = document.querySelector('.toggle-bg');
+      if (toggleBg) {
+        if (finalTargetTab === 'Yearly') {
+          toggleBg.style.transform = 'translateX(100%)';
+        } else {
+          toggleBg.style.transform = 'translateX(0%)';
+        }
+        console.log('🔍 Debug: Toggle background moved to:', finalTargetTab);
+      } else {
+        console.error('❌ Toggle background not found!');
+      }
+      
+      // Force trigger CSS by adding/removing a class
+      pricingTabs.classList.remove('force-update');
+      setTimeout(() => pricingTabs.classList.add('force-update'), 10);
       
       // Add flip animation to price elements
       const priceElements = document.querySelectorAll('.per-month-pricing-wrapper .body-small');
@@ -72,7 +138,7 @@ function initPriceFlipAnimation() {
       const yearlyPanel = document.querySelector('[data-w-tab="Yearly"].pricing-tab-panel');
       
       if (monthlyPanel && yearlyPanel) {
-        if (targetTab === 'Monthly') {
+        if (finalTargetTab === 'Monthly') {
           monthlyPanel.classList.add('w--tab-active');
           yearlyPanel.classList.remove('w--tab-active');
         } else {
@@ -240,6 +306,7 @@ function runInitializations() {
   try {
     initScrollAnimations();
     initPriceFlipAnimation();
+    initSwitchCirclePosition(); // Initialize switch circle position
     initHouseIconAnimation();
     initFAQAnimations();
     initDynamicTheming();
